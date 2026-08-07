@@ -1,16 +1,11 @@
-"""
-TrainBuilder
-Entry Point
-
-Author: Minh Thắng & ChatGPT
-"""
-
-from src.core.app import TrainBuilderApp
+from src.core.game import Game
 
 
 def main():
-    app = TrainBuilderApp()
-    app.run()
+
+    game = Game()
+
+    game.run()
 
 
 if __name__ == "__main__":
