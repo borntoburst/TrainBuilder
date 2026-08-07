@@ -1,13 +1,35 @@
 """
 TrainBuilder
 Asset Manager
+
+Tự động quét toàn bộ thư mục assets.
+Không Scene nào được phép gọi pygame.image.load().
 """
 
 from pathlib import Path
+
 import pygame
 
 
 class AssetManager:
+
+    IMAGE_EXTENSIONS = {
+        ".png",
+        ".jpg",
+        ".jpeg",
+        ".webp",
+    }
+
+    SOUND_EXTENSIONS = {
+        ".wav",
+        ".ogg",
+        ".mp3",
+    }
+
+    FONT_EXTENSIONS = {
+        ".ttf",
+        ".otf",
+    }
 
     def __init__(self, asset_root):
 
@@ -15,77 +37,82 @@ class AssetManager:
 
         self.images = {}
 
-        self.fonts = {}
-
         self.sounds = {}
+
+        self.font_paths = {}
+
+    # =====================================================
+    # PUBLIC
+    # =====================================================
+
+    def load_all(self):
+        """
+        Quét toàn bộ thư mục assets.
+        """
+
+        if not self.asset_root.exists():
+            raise FileNotFoundError(self.asset_root)
+
+        for file in self.asset_root.rglob("*"):
+
+            if not file.is_file():
+                continue
+
+            suffix = file.suffix.lower()
+
+            key = file.stem
+
+            if suffix in self.IMAGE_EXTENSIONS:
+
+                self.images[key] = pygame.image.load(file).convert_alpha()
+
+            elif suffix in self.SOUND_EXTENSIONS:
+
+                self.sounds[key] = pygame.mixer.Sound(file)
+
+            elif suffix in self.FONT_EXTENSIONS:
+
+                self.font_paths[key] = file
 
     # =====================================================
     # IMAGE
     # =====================================================
 
-    def load_image(self, name, relative_path):
-
-        path = self.asset_root / relative_path
-
-        image = pygame.image.load(path).convert_alpha()
-
-        self.images[name] = image
-
-        return image
-
     def get_image(self, name):
 
-        if name not in self.images:
-            raise KeyError(f"Image '{name}' has not been loaded.")
+        try:
+            return self.images[name]
 
-        return self.images[name]
+        except KeyError:
+            raise KeyError(f"Image '{name}' not found.")
+
+    def has_image(self, name):
+
+        return name in self.images
 
     # =====================================================
     # FONT
     # =====================================================
 
-    def load_font(self, name, relative_path, size):
+    def get_font(self, name, size):
 
-        path = self.asset_root / relative_path
+        if name not in self.font_paths:
+            raise KeyError(f"Font '{name}' not found.")
 
-        font = pygame.font.Font(path, size)
+        return pygame.font.Font(self.font_paths[name], size)
 
-        self.fonts[name] = font
+    def get_system_font(self, name, size, bold=False):
 
-        return font
-
-    def load_system_font(self, name, font_name, size, bold=False):
-
-        font = pygame.font.SysFont(font_name, size, bold)
-
-        self.fonts[name] = font
-
-        return font
-
-    def get_font(self, name):
-
-        if name not in self.fonts:
-            raise KeyError(f"Font '{name}' has not been loaded.")
-
-        return self.fonts[name]
+        return pygame.font.SysFont(name, size, bold)
 
     # =====================================================
     # SOUND
     # =====================================================
 
-    def load_sound(self, name, relative_path):
-
-        path = self.asset_root / relative_path
-
-        sound = pygame.mixer.Sound(path)
-
-        self.sounds[name] = sound
-
-        return sound
-
     def get_sound(self, name):
 
-        if name not in self.sounds:
-            raise KeyError(f"Sound '{name}' has not been loaded.")
+        try:
+            return self.sounds[name]
 
-        return self.sounds[name]
+        except KeyError:
+            raise KeyError(f"Sound '{name}' not found.")
