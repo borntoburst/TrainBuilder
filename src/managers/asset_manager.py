@@ -60,7 +60,9 @@ class AssetManager:
 
             suffix = file.suffix.lower()
 
-            key = file.stem
+            relative_path = file.relative_to(self.asset_root)
+
+            key = relative_path.with_suffix("").as_posix()
 
             if suffix in self.IMAGE_EXTENSIONS:
 
