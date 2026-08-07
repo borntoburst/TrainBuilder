@@ -136,7 +136,7 @@ DEFAULT_VOLUME = 0.8
 # Gameplay
 # ============================================================
 
-WAGON_COUNT = 3
+DEFAULT_WAGON_COUNT = 3
 
 MAX_MATERIAL_OPTIONS = 10
 
