@@ -32,7 +32,7 @@ class SceneManager:
 
     def _load_scenes(self):
 
-        self.scenes[SCENE_MENU] = MenuScene(self.app)
+        self.scenes[SCENE_MENU] = MenuScene(self)
 
         self.scenes[SCENE_CONFIG] = ConfigScene(self.app)
 
