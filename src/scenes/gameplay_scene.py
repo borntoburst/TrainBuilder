@@ -6,11 +6,17 @@ Gameplay Scene
 import pygame
 
 from src.scenes.base_scene import BaseScene
+
 from src.core.constants import (
-    WINDOW_WIDTH,
-    WINDOW_HEIGHT,
     WHITE,
     BLACK,
+)
+
+from src.core.layout import (
+    QUESTION_AREA,
+    BUILDING_AREA,
+    TRAIN_AREA,
+    MATERIAL_AREA,
 )
 
 
@@ -23,14 +29,7 @@ class GameplayScene(BaseScene):
         self.game = scene_manager.game
 
         self.background = None
-
-        self.title_font = None
-
-        # Placeholder
-        self.train_position = (150, 520)
-        self.building_position = (950, 180)
-        self.question_position = (WINDOW_WIDTH // 2, 70)
-        self.material_position = (WINDOW_WIDTH // 2, 620)
+        self.font = None
 
     # --------------------------------------------------
     # Scene Lifecycle
@@ -38,11 +37,11 @@ class GameplayScene(BaseScene):
 
     def enter(self):
 
-        if self.title_font is None:
+        if self.font is None:
 
-            self.title_font = self.game.assets.get_system_font(
+            self.font = self.game.assets.get_system_font(
                 "arial",
-                36,
+                32,
                 bold=True,
             )
 
@@ -83,86 +82,87 @@ class GameplayScene(BaseScene):
 
             screen.fill(WHITE)
 
-        self._draw_placeholder(screen)
+        self.draw_question_area(screen)
+        self.draw_building_area(screen)
+        self.draw_train_area(screen)
+        self.draw_material_area(screen)
 
     # --------------------------------------------------
-    # Debug Placeholder
+    # Draw Area
     # --------------------------------------------------
 
-    def _draw_placeholder(self, screen):
+    def draw_question_area(self, screen):
 
-        # Question Area
         pygame.draw.rect(
             screen,
-            (220, 220, 220),
-            (240, 20, 800, 80),
-            border_radius=10,
+            (230, 230, 230),
+            QUESTION_AREA,
+            border_radius=12,
         )
 
-        question = self.title_font.render(
+        self.draw_text(
+            screen,
             "QUESTION AREA",
-            True,
-            BLACK,
+            QUESTION_AREA.center,
         )
 
-        screen.blit(
-            question,
-            question.get_rect(center=self.question_position),
-        )
+    def draw_building_area(self, screen):
 
-        # Building Area
         pygame.draw.rect(
             screen,
             (210, 240, 210),
-            (850, 130, 320, 250),
-            border_radius=10,
+            BUILDING_AREA,
+            border_radius=12,
         )
 
-        building = self.title_font.render(
+        self.draw_text(
+            screen,
             "BUILDING",
-            True,
-            BLACK,
+            BUILDING_AREA.center,
         )
 
-        screen.blit(
-            building,
-            building.get_rect(center=self.building_position),
-        )
+    def draw_train_area(self, screen):
 
-        # Train Area
         pygame.draw.rect(
             screen,
-            (210, 230, 255),
-            (60, 450, 760, 170),
-            border_radius=10,
+            (210, 225, 255),
+            TRAIN_AREA,
+            border_radius=12,
         )
 
-        train = self.title_font.render(
+        self.draw_text(
+            screen,
             "TRAIN",
-            True,
-            BLACK,
+            TRAIN_AREA.center,
         )
 
-        screen.blit(
-            train,
-            train.get_rect(center=self.train_position),
-        )
+    def draw_material_area(self, screen):
 
-        # Material Area
         pygame.draw.rect(
             screen,
             (255, 240, 200),
-            (180, 600, 900, 90),
-            border_radius=10,
+            MATERIAL_AREA,
+            border_radius=12,
         )
 
-        material = self.title_font.render(
-            "MATERIAL AREA",
+        self.draw_text(
+            screen,
+            "MATERIAL",
+            MATERIAL_AREA.center,
+        )
+
+    # --------------------------------------------------
+    # Helper
+    # --------------------------------------------------
+
+    def draw_text(self, screen, text, center):
+
+        surface = self.font.render(
+            text,
             True,
             BLACK,
         )
 
-        screen.blit(
-            material,
-            material.get_rect(center=self.material_position),
-        )
+        rect = surface.get_rect(center=center)
+
+        screen.blit(surface, rect)
