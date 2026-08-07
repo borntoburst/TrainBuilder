@@ -34,11 +34,11 @@ class SceneManager:
 
         self.scenes[SCENE_MENU] = MenuScene(self)
 
-        self.scenes[SCENE_CONFIG] = ConfigScene(self.app)
+        self.scenes[SCENE_CONFIG] = ConfigScene(self)
 
-        self.scenes[SCENE_GAMEPLAY] = GameplayScene(self.app)
+        self.scenes[SCENE_GAMEPLAY] = GameplayScene(self)
 
-        self.scenes[SCENE_RESULT] = ResultScene(self.app)
+        self.scenes[SCENE_RESULT] = ResultScene(self)
 
     def change_scene(self, scene_name):
 
