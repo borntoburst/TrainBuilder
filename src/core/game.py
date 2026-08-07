@@ -51,19 +51,23 @@ class Game:
 
     def run(self):
 
-        while self.running:
+        try:
 
-            dt = self.clock.tick(FPS) / 1000
+            while self.running:
 
-            self._handle_events()
+                dt = self.clock.tick(FPS) / 1000
 
-            self.scene_manager.update(dt)
+                self._handle_events()
 
-            self.scene_manager.draw(self.screen)
+                self.scene_manager.update(dt)
 
-            pygame.display.flip()
+                self.scene_manager.draw(self.screen)
 
-        pygame.quit()
+                pygame.display.flip()
+
+        finally:
+
+            pygame.quit()
 
     def _handle_events(self):
 
