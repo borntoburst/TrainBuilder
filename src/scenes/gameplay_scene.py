@@ -4,7 +4,7 @@ Gameplay Scene
 """
 
 import pygame
-
+from src.systems.train_system import TrainSystem
 from src.scenes.base_scene import BaseScene
 
 from src.core.constants import (
@@ -23,7 +23,7 @@ from src.core.layout import (
 class GameplayScene(BaseScene):
 
     def __init__(self, scene_manager):
-
+        self.train_system = TrainSystem(self.game)
         super().__init__(scene_manager)
 
         self.game = scene_manager.game
@@ -59,6 +59,7 @@ class GameplayScene(BaseScene):
     # --------------------------------------------------
 
     def handle_event(self, event):
+        self.train_system.handle_event(event)
         pass
 
     # --------------------------------------------------
@@ -66,6 +67,7 @@ class GameplayScene(BaseScene):
     # --------------------------------------------------
 
     def update(self, dt):
+        self.train_system.update(dt)
         pass
 
     # --------------------------------------------------
@@ -81,11 +83,12 @@ class GameplayScene(BaseScene):
         else:
 
             screen.fill(WHITE)
-
+   
         self.draw_question_area(screen)
         self.draw_building_area(screen)
         self.draw_train_area(screen)
         self.draw_material_area(screen)
+        self.train_system.draw(screen)
 
     # --------------------------------------------------
     # Draw Area
