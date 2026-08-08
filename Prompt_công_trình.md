@@ -1,0 +1,1 @@
+Cute 2D cartoon game asset, colorful, thick outline, soft shadow, side view, kid-friendly, bright saturated colors, rounded shapes, clean transparent PNG, consistent style with the TrainBuilder locomotive.
