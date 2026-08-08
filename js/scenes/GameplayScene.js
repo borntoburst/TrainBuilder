@@ -5,11 +5,15 @@
 =====================================================
 */
 
+import { TrainSystem } from "../systems/TrainSystem.js";
+
 export class GameplayScene extends Phaser.Scene {
 
     constructor() {
 
         super("GameplayScene");
+
+        this.trainSystem = null;
 
     }
 
@@ -21,67 +25,26 @@ export class GameplayScene extends Phaser.Scene {
 
         this.cameras.main.setBackgroundColor("#DCEEFF");
 
-        // =====================================================
-        // Title
-        // =====================================================
-
-        this.add.text(
-            640,
-            70,
-            "GAMEPLAY",
-            {
-                fontFamily: "Arial",
-                fontSize: "48px",
-                color: "#222222",
-                fontStyle: "bold"
-            }
-        ).setOrigin(0.5);
+        // Nếu đã có background thì bỏ comment dòng dưới
+        // this.add.image(640, 360, "gameplay_background");
 
         // =====================================================
-        // Placeholder
+        // Train
         // =====================================================
 
-        this.add.text(
-            640,
-            360,
-            "Gameplay Scene\n(Coming Soon)",
-            {
-                fontFamily: "Arial",
-                fontSize: "30px",
-                color: "#555555",
-                align: "center"
-            }
-        ).setOrigin(0.5);
+        this.trainSystem = new TrainSystem(this);
 
-        // =====================================================
-        // Back Button
-        // =====================================================
+        this.trainSystem.create();
 
-        const backButton = this.add.text(
-            640,
-            620,
-            "VỀ MENU",
-            {
-                fontFamily: "Arial",
-                fontSize: "32px",
-                backgroundColor: "#607D8B",
-                color: "#FFFFFF",
-                padding: {
-                    left: 24,
-                    right: 24,
-                    top: 12,
-                    bottom: 12
-                }
-            }
-        )
-        .setOrigin(0.5)
-        .setInteractive({ useHandCursor: true });
+    }
 
-        backButton.on("pointerdown", () => {
+    update(time, delta) {
 
-            this.scene.start("MenuScene");
+        if (this.trainSystem) {
 
-        });
+            this.trainSystem.update(delta);
+
+        }
 
     }
 
